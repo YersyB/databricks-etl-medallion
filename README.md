@@ -92,7 +92,7 @@ El catálogo se pasa como parámetro (`catalog`), así el mismo código sirve pa
 
 Las validaciones confirman que las compras de Gold (638,591) cuadran con Silver, y que las órdenes del patrón (62,028) cuadran con el detalle.
 
-![Job de Databricks en verde](evidencias/job_workflow.png)
+![Job de Databricks en verde](evidencias/job_workflow.jpg)
 
 ## 5. Reversión
 
