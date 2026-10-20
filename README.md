@@ -147,7 +147,7 @@ El dashboard tiene:
 
 **Enlace:** [Dashboard Instacart (Lakeview)](https://adb-7405607898569566.6.azuredatabricks.net/dashboardsv3/01f1cc0fd5121ab1bd6c5c58d5318ba6/published?o=7405607898569566). Para abrirlo hay que iniciar sesión en el workspace y tener acceso al dashboard.
 
-![Dashboard Instacart](dashboard/dashboard_instacart.png)
+![Dashboard Instacart](dashboard/dashboard_instacart.jpg)
 
 ## 8. Estructura del repositorio
 
