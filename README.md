@@ -130,7 +130,7 @@ El pipeline `.github/workflows/cicd.yml` se ejecuta en cada push a `main` (o man
 
 Los permisos de administración (`GRANT MANAGE` y propiedad del catálogo) los ejecuta un administrador una sola vez, fuera del pipeline, porque el service principal no puede otorgarse esos permisos a sí mismo. Ver `PrepAmb/00_admin_permisos.py`.
 
-![GitHub Actions en verde](evidencias/github_actions.png)
+![GitHub Actions en verde](evidencias/github_actions.jpg)
 
 ## 7. Visualización
 
