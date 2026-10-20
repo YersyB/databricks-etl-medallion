@@ -1,0 +1,78 @@
+bundle:
+  name: etl_medallion
+
+variables:
+  catalog:
+    description: Catálogo donde se crean las tablas
+    default: dbw_etl_medallion
+
+sync:
+  exclude:
+    - datasets/**
+    - dashboard/**
+    - evidencias/**
+    - certificaciones/**
+
+resources:
+  jobs:
+    etl_medallion:
+      name: etl_medallion
+      environments:
+        - environment_key: default
+          spec:
+            client: "2"
+      tasks:
+        - task_key: prepamb
+          environment_key: default
+          notebook_task:
+            notebook_path: ./proceso/00_prepamb.py
+            base_parameters:
+              catalog: ${var.catalog}
+
+        - task_key: extract
+          depends_on:
+            - task_key: prepamb
+          environment_key: default
+          notebook_task:
+            notebook_path: ./proceso/01_extract.py
+            base_parameters:
+              catalog: ${var.catalog}
+
+        - task_key: transform
+          depends_on:
+            - task_key: extract
+          environment_key: default
+          notebook_task:
+            notebook_path: ./proceso/02_transform.py
+            base_parameters:
+              catalog: ${var.catalog}
+
+        - task_key: load
+          depends_on:
+            - task_key: transform
+          environment_key: default
+          notebook_task:
+            notebook_path: ./proceso/03_load.py
+            base_parameters:
+              catalog: ${var.catalog}
+
+        - task_key: grants
+          depends_on:
+            - task_key: load
+          environment_key: default
+          notebook_task:
+            notebook_path: ./proceso/04_grants.py
+            base_parameters:
+              catalog: ${var.catalog}
+
+targets:
+  dev:
+    mode: development
+    default: true
+    variables:
+      catalog: dbw_etl_medallion
+
+  prod:
+    mode: production
+    variables:
+      catalog: prod_medallion
