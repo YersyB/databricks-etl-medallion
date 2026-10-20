@@ -8,14 +8,13 @@ for f in ["orders.csv", "order_products__prior.csv", "order_products__train.csv"
 
 from pyspark.sql import functions as F
 
-# Parámetros (widgets) para cambiar de ambiente sin editar el código
+# Parámetros (widgets) 
 dbutils.widgets.text("catalog", "dbw_etl_medallion")
 dbutils.widgets.text("raw_base", "abfss://raw@stetlmedallionybu.dfs.core.windows.net")
 
 catalog = dbutils.widgets.get("catalog")
 raw_base = dbutils.widgets.get("raw_base")
 
-# Todos los archivos de la bundle usan ";" como separador
 SEP = ";"
 
 fuentes = {

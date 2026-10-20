@@ -2,7 +2,6 @@
 # MAGIC %sql
 # MAGIC -- seguridad/grants.sql
 # MAGIC -- Permisos de lectura sobre las tablas Gold creadas por el ETL.
-# MAGIC -- Reemplaza `account users` por tu grupo si quieres restringirlo.
 # MAGIC
 # MAGIC GRANT USE CATALOG ON CATALOG dbw_etl_medallion TO `account users`;
 # MAGIC GRANT USE SCHEMA ON SCHEMA dbw_etl_medallion.gold TO `account users`;
@@ -20,11 +19,9 @@ dbutils.widgets.text("catalog", "dbw_etl_medallion")
 catalog = dbutils.widgets.get("catalog")
 
 sp = "dce59739-ba76-4c1e-a04b-0dd3dfd0e586"
-grupo = "account users"  # reemplaza por tu grupo si lo necesitas
+grupo = "account users"  
 
 # 1. MANAGE para el service principal.
-# Solo funciona si el service principal ya es propietario o administrador del catálogo.
-# Si ya lo otorgó un administrador, este paso no hace nada y continúa.
 try:
     spark.sql(f"GRANT MANAGE ON CATALOG {catalog} TO `{sp}`")
     print(f"OK: MANAGE otorgado en {catalog}")
