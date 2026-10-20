@@ -180,7 +180,7 @@ El dashboard tiene:
 | Arquitectura | `evidencias/arquitectura.png` |
 | Recursos de Azure en el Resource Group | `evidencias/azure_recursos.png` |
 | Job de Databricks en verde | `evidencias/job_workflow.jpg` |
-| GitHub Actions en verde | `evidencias/github_actions.png` |
+| GitHub Actions en verde | `evidencias/github_actions.jpg` |
 | Dashboard | `dashboard/dashboard_instacart.jpg` |
 
 ## 11. Autor
