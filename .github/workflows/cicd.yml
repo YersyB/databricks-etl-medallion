@@ -1,0 +1,49 @@
+name: CI-CD Databricks
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+  DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+  DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Validar bundle en dev
+        run: databricks bundle validate -t dev
+
+      - name: Desplegar en dev
+        run: databricks bundle deploy -t dev
+
+      - name: Ejecutar job en dev
+        run: databricks bundle run -t dev etl_medallion
+
+  deploy-prod:
+    needs: deploy-dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Validar bundle en prod
+        run: databricks bundle validate -t prod
+
+      - name: Desplegar en prod
+        run: databricks bundle deploy -t prod
+
+      - name: Ejecutar job en prod
+        run: databricks bundle run -t prod etl_medallion
