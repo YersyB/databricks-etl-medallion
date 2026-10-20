@@ -1,38 +1,14 @@
 # Databricks notebook source
-# Databricks notebook source
-#dbutils.widgets.dropdown("entorno", "dev", ["dev", "prod", "ambos"])
-#entorno = dbutils.widgets.get("entorno")
-entorno = "ambos"
-print(f"{entorno}:")
+# Crea los schemas bronze, silver y gold en el catálogo del ambiente.
+# Los catálogos los crea un administrador (ver PrepAmb/00_admin_permisos.py).
 
-# Definir 2 catálogos
-catalogos = {
-    "dev": "dbw_etl_medallion",
-    "prod": "prod_medallion"
-}
+dbutils.widgets.text("catalog", "dbw_etl_medallion")
+catalog = dbutils.widgets.get("catalog")
 
-# Crear ambos
-if entorno == "ambos":
-    catalogos_a_crear = list(catalogos.values())
-else:
-    catalogos_a_crear = [catalogos[entorno]]
+print(f"Creando schemas en {catalog}")
 
-for catalog in catalogos_a_crear:
-    print(f"\n--- Creando estructura en CATÁLOGO: {catalog} ---")
-    
-    # 1. Crear el catálogo si no existe (solo si eres Metastore Admin)
-    try:
-        spark.sql(f"CREATE CATALOG IF NOT EXISTS `{catalog}`")
-        print(f"Catálogo listo: {catalog}")
-    except Exception as e:
-        print(f"No pude crear catálogo {catalog} (ya existe o no eres admin): {e}")
+for capa in ["bronze", "silver", "gold"]:
+    spark.sql(f"CREATE SCHEMA IF NOT EXISTS `{catalog}`.`{capa}`")
+    print(f"  -> Schema listo: {catalog}.{capa}")
 
-    # 2. Crear las 3 capas
-    for capa in ["bronze", "silver", "gold"]:
-        spark.sql(f"CREATE SCHEMA IF NOT EXISTS `{catalog}`.`{capa}`")
-        print(f"  -> Schema listo: {catalog}.{capa}")
-
-# 3. Verificar todo
-for catalog in catalogos_a_crear:
-    print(f"\nSchemas en {catalog}:")
-    display(spark.sql(f"SHOW SCHEMAS IN `{catalog}`"))
+display(spark.sql(f"SHOW SCHEMAS IN `{catalog}`"))
